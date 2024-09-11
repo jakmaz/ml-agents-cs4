@@ -37,19 +37,10 @@ For a more comprehensive understanding of ML-Agents, visit the [official documen
 
 To verify that everything is working correctly, you can run the 3D Ball agent as a test. This is a simple environment included with the ML-Agents package that everybody should be able to run successfully:
 
-1. **Open the Package Manager Window**  
-   Navigate to `Window -> Package Manager` from the menu bar.
-
-2. **Find the ML-Agents Package**  
-   Scroll through the list of installed packages and find the ML-Agents package. Click on it.
-
-3. **Import the 3D Ball Example**  
-   After selecting the ML-Agents package, locate the 3D Ball sample under the package details and click **Import** to bring it into your project.
-
-4. **Open the 3D Ball Scene**  
+1. **Open the 3D Ball Scene**  
    In the Project window, navigate to `Assets/ML-Agents/Examples/3DBall/Scenes` and open the `3DBall` scene file.
 
-5. **Run the Scene**  
+2. **Run the Scene**  
    Once the 3D Ball scene is loaded, press the **Play** button to run the environment and see the agent in action.
 
 Everybody should be able to run this test to ensure that the ML-Agents environment is set up correctly.
