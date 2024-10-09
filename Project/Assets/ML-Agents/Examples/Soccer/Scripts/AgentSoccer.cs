@@ -39,6 +39,7 @@ public class AgentSoccer : Agent
     float m_ForwardSpeed;
 
 
+
     [HideInInspector]
     public Rigidbody agentRb;
     SoccerSettings m_SoccerSettings;
@@ -50,6 +51,7 @@ public class AgentSoccer : Agent
 
     public override void Initialize()
     {
+        Console.Writeline('Hello World! Initialized...');
         SoccerEnvController envController = GetComponentInParent<SoccerEnvController>();
         if (envController != null)
         {
