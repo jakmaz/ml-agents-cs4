@@ -193,7 +193,7 @@ public class AgentSoccer : Agent
     /// <summary>
     /// Used to provide a "kick" to the ball.
     /// </summary>
-    void OnCollisionEnter(Collision c)
+    public void OnCollisionEnter(Collision c)
     {
         var force = k_Power * m_KickPower;
         if (position == Position.Goalie)
