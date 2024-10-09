@@ -95,3 +95,12 @@ coverage.xml
 /htmlcov/
 
 **/UserSettings/*
+
+# Project gitignore settings
+[Ll]ibrary/
+[Tt]emp/
+[Ll]ogs/
+[Bb]uild/
+[Bb]uilds/
+UserSettings/
+
