@@ -12,11 +12,11 @@ public class AgentFairSoccer : AgentSoccer
         // Check for collisions with opposing players and apply penalties
         if (team == Team.Blue && c.gameObject.CompareTag("purpleAgent"))
         {
-            AddReward(-0.5f); // Penalize blue agent for colliding with a purple agent
+            AddReward(-0.01f); // Penalize blue agent for colliding with a purple agent
         }
         else if (team == Team.Purple && c.gameObject.CompareTag("blueAgent"))
         {
-            AddReward(-0.5f); // Penalize purple agent for colliding with a blue agent
+            AddReward(-0.01f); // Penalize purple agent for colliding with a blue agent
         }
     }
 }
