@@ -61,7 +61,9 @@ namespace Unity.MLAgents
                     var mlAgentsSamplePath = Path.Combine(exampleDirectory, k_MLAgentsSampleFile);
                     if (File.Exists(mlAgentsSamplePath))
                     {
-                        var sampleJson = JsonConvert.DeserializeObject<MLAgentsSampleJson>(File.ReadAllText(mlAgentsSamplePath));
+                        using(var reader = new StreamReader(mlAgentsSamplePath)){
+                            var sampleJson = JsonConvert.DeserializeObject<MLAgentsSampleJson>(reader.ReadToEnd());
+                        }
                         Debug.Log(JsonConvert.SerializeObject(sampleJson));
                         foreach (var scene in sampleJson.scenes)
                         {
