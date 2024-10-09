@@ -28,6 +28,10 @@ public class AgentSoccer : Agent
 
     [HideInInspector]
     public Team team;
+
+    public Vector3 opponentGoalPosition;
+    public Vector3 ownGoalPosition;
+
     float m_KickPower;
     // The coefficient for the reward for colliding with a ball. Set using curriculum.
     float m_BallTouch;
@@ -45,6 +49,7 @@ public class AgentSoccer : Agent
     BehaviorParameters m_BehaviorParameters;
     public Vector3 initialPos;
     public float rotSign;
+    public GameObject ball;
 
     EnvironmentParameters m_ResetParams;
 
@@ -53,6 +58,7 @@ public class AgentSoccer : Agent
         SoccerEnvController envController = GetComponentInParent<SoccerEnvController>();
         if (envController != null)
         {
+            ball = envController.ball;
             m_Existential = 1f / envController.MaxEnvironmentSteps;
         }
         else
@@ -93,6 +99,17 @@ public class AgentSoccer : Agent
         agentRb.maxAngularVelocity = 500;
 
         m_ResetParams = Academy.Instance.EnvironmentParameters;
+
+        if (team == Team.Blue)
+        {
+            ownGoalPosition = new Vector3(-1650, -25, -1.5258f); // Blue goal position
+            opponentGoalPosition = new Vector3(1650, -25, 1.5258f); // Purple goal position
+        }
+        else
+        {
+            ownGoalPosition = new Vector3(1650, -25, 1.5258f); // Purple goal position
+            opponentGoalPosition = new Vector3(-1650, -25, -1.5258f); // Blue goal position
+        }
     }
 
     public void MoveAgent(ActionSegment<int> act)
@@ -157,6 +174,15 @@ public class AgentSoccer : Agent
             AddReward(-m_Existential);
         }
         MoveAgent(actionBuffers.DiscreteActions);
+
+        // Additional reward for proximity to the opponent's goal
+        float distanceToOpponentGoal = Vector3.Distance(transform.position, opponentGoalPosition);
+        float distanceBallToOpponentGoal = Vector3.Distance( ball.transform.position, opponentGoalPosition); 
+
+        if (distanceToOpponentGoal < 5f && distanceBallToOpponentGoal < 5f) 
+        {
+            AddReward(0.1f);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -195,19 +221,37 @@ public class AgentSoccer : Agent
     /// </summary>
     void OnCollisionEnter(Collision c)
     {
-        var force = k_Power * m_KickPower;
-        if (position == Position.Goalie)
-        {
-            force = k_Power;
-        }
         if (c.gameObject.CompareTag("ball"))
         {
-            AddReward(.2f * m_BallTouch);
+            Vector3 directionToOpponentGoal = (opponentGoalPosition - transform.position).normalized;
+            Vector3 directionToOwnGoal = (ownGoalPosition - transform.position).normalized;
+            float alignmentWithOpponentGoal = Vector3.Dot(directionToOpponentGoal, transform.forward);
+            float alignmentWithOwnGoal = Vector3.Dot(directionToOwnGoal, transform.forward);
+
+            // Reward for kicking towards the opponent's goal
+            if (alignmentWithOpponentGoal > 0.8f)
+            {
+                AddReward(0.5f); // Positive reward for pushing towards the opponent's goal
+            }
+
+            // Negative reward for kicking towards the own goal
+            if (alignmentWithOwnGoal > 0.8f) 
+            {
+                AddReward(-0.5f); // Negative reward for pushing towards the own goal
+            }
+
+            // Apply the kick to the ball
+            var force = k_Power * m_KickPower;
+            if (position == Position.Goalie) force = k_Power;
             var dir = c.contacts[0].point - transform.position;
             dir = dir.normalized;
             c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
+
+            // Ball touch reward (optional, if not already included)
+            AddReward(.2f * m_BallTouch);
         }
     }
+
 
     public override void OnEpisodeBegin()
     {
