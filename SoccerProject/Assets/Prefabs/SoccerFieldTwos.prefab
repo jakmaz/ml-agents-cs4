@@ -2259,7 +2259,6 @@ MonoBehaviour:
   TeamId: 1
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
 --- !u!114 &114492261207303438
 MonoBehaviour:
@@ -2310,8 +2309,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -2329,7 +2326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
-  DecisionStep: 0
   TakeActionsBetweenDecisions: 1
 --- !u!114 &798330825103180240
 MonoBehaviour:
@@ -2340,10 +2336,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1095606497496374}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6da8f78a394c6ab027688eab81e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCommandLineOverride: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  team: 0
+  position: 0
+  agentRb: {fileID: 0}
+  initialPos: {x: 0, y: 0, z: 0}
+  rotSign: 0
 --- !u!1 &1101518129530804
 GameObject:
   m_ObjectHideFlags: 0
@@ -2544,7 +2548,6 @@ MonoBehaviour:
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
 --- !u!114 &114850431417842684
 MonoBehaviour:
@@ -2595,8 +2598,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -2614,7 +2615,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
-  DecisionStep: 0
   TakeActionsBetweenDecisions: 1
 --- !u!114 &8557426429796011212
 MonoBehaviour:
@@ -2625,10 +2625,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1131626411948014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6da8f78a394c6ab027688eab81e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCommandLineOverride: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  team: 0
+  position: 0
+  agentRb: {fileID: 0}
+  initialPos: {x: 0, y: 0, z: 0}
+  rotSign: 0
 --- !u!1 &1141134673700168
 GameObject:
   m_ObjectHideFlags: 0
@@ -3693,8 +3701,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -3842,8 +3848,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -4157,8 +4161,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -4451,7 +4453,6 @@ MonoBehaviour:
   TeamId: 1
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
 --- !u!114 &5320024511406682322
 MonoBehaviour:
@@ -4502,8 +4503,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -4521,7 +4520,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
-  DecisionStep: 0
   TakeActionsBetweenDecisions: 1
 --- !u!114 &6283479335904612434
 MonoBehaviour:
@@ -4532,10 +4530,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 6257467487437560250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6da8f78a394c6ab027688eab81e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCommandLineOverride: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  team: 0
+  position: 0
+  agentRb: {fileID: 0}
+  initialPos: {x: 0, y: 0, z: 0}
+  rotSign: 0
 --- !u!1 &6442519122303792292
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,7 +4996,6 @@ MonoBehaviour:
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
-  m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
 --- !u!114 &5379409612883756837
 MonoBehaviour:
@@ -5041,8 +5046,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
@@ -5060,7 +5063,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
-  DecisionStep: 0
   TakeActionsBetweenDecisions: 1
 --- !u!114 &6939753220642424022
 MonoBehaviour:
@@ -5071,10 +5073,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 8360301818957399454}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a6da8f78a394c6ab027688eab81e04d, type: 3}
+  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugCommandLineOverride: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  team: 0
+  position: 0
+  agentRb: {fileID: 0}
+  initialPos: {x: 0, y: 0, z: 0}
+  rotSign: 0
 --- !u!1 &8673569163220857793
 GameObject:
   m_ObjectHideFlags: 0
@@ -5301,8 +5311,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967291
   m_ObservationStacks: 3
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 1
   rayHitColor: {r: 1, g: 0, b: 0, a: 1}
   rayMissColor: {r: 1, g: 1, b: 1, a: 1}
   m_StartVerticalOffset: 0.5
