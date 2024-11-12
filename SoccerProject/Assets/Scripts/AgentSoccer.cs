@@ -37,6 +37,8 @@ public class AgentSoccer : Agent
     float m_Existential;
     float m_LateralSpeed;
     float m_ForwardSpeed;
+    private float m_VisionAngle = 0f; // Current vision angle relative to forward direction
+    private float m_VisionRotateSpeed = 180f; // Degrees per second
 
 
     [HideInInspector]
@@ -45,6 +47,7 @@ public class AgentSoccer : Agent
     BehaviorParameters m_BehaviorParameters;
     public Vector3 initialPos;
     public float rotSign;
+    public float VisionAngle => m_VisionAngle;
 
     EnvironmentParameters m_ResetParams;
 
@@ -95,6 +98,8 @@ public class AgentSoccer : Agent
         m_ResetParams = Academy.Instance.EnvironmentParameters;
     }
 
+    
+
     public void MoveAgent(ActionSegment<int> act)
     {
         var dirToGo = Vector3.zero;
@@ -105,6 +110,7 @@ public class AgentSoccer : Agent
         var forwardAxis = act[0];
         var rightAxis = act[1];
         var rotateAxis = act[2];
+        var visionAxis = act[3];
 
         switch (forwardAxis)
         {
@@ -136,6 +142,18 @@ public class AgentSoccer : Agent
                 rotateDir = transform.up * 1f;
                 break;
         }
+
+        switch (visionAxis)
+        {
+            case 1:
+                m_VisionAngle -= m_VisionRotateSpeed * Time.deltaTime;
+                break;
+            case 2:
+                m_VisionAngle += m_VisionRotateSpeed * Time.deltaTime;
+                break;
+        }
+
+        m_VisionAngle = Mathf.Repeat(m_VisionAngle, 360f); // makes sure vision angle doesn't go above 360
 
         transform.Rotate(rotateDir, Time.deltaTime * 100f);
         agentRb.AddForce(dirToGo * m_SoccerSettings.agentRunSpeed,
@@ -188,6 +206,15 @@ public class AgentSoccer : Agent
         if (Input.GetKey(KeyCode.Q))
         {
             discreteActionsOut[1] = 2;
+        }
+        // Vision controls
+        if (Input.GetKey(KeyCode.Z))
+        {
+            discreteActionsOut[3] = 1;  // Rotate vision left
+        }
+        if (Input.GetKey(KeyCode.C))
+        {
+            discreteActionsOut[3] = 2;  // Rotate vision right
         }
     }
     /// <summary>
