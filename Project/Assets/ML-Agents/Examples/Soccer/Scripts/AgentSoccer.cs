@@ -160,26 +160,28 @@ public class AgentSoccer : Agent
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
-
     {
+        var soundSensor = GetComponent<SoundSensor>();
+        if (soundSensor != null)
+        {
+            soundSensor.ResetSound();
+        }
 
         if (position == Position.Goalie)
         {
-            // Existential bonus for Goalies.
             AddReward(m_Existential);
         }
         else if (position == Position.Striker)
         {
-            // Existential penalty for Strikers
             AddReward(-m_Existential);
         }
+
         MoveAgent(actionBuffers.DiscreteActions);
 
-        // Additional reward for proximity to the opponent's goal
         float distanceToOpponentGoal = Vector3.Distance(transform.position, opponentGoalPosition);
-        float distanceBallToOpponentGoal = Vector3.Distance( ball.transform.position, opponentGoalPosition); 
+        float distanceBallToOpponentGoal = Vector3.Distance(ball.transform.position, opponentGoalPosition);
 
-        if (distanceToOpponentGoal < 5f && distanceBallToOpponentGoal < 5f) 
+        if (distanceToOpponentGoal < 5f && distanceBallToOpponentGoal < 5f)
         {
             AddReward(0.1f);
         }
@@ -221,41 +223,68 @@ public class AgentSoccer : Agent
     /// </summary>
     void OnCollisionEnter(Collision c)
     {
-        if (c.gameObject.CompareTag("ball"))
+        var soundSensor = GetComponent<SoundSensor>();
+        if (soundSensor != null)
         {
-            Vector3 directionToOpponentGoal = (opponentGoalPosition - transform.position).normalized;
-            Vector3 directionToOwnGoal = (ownGoalPosition - transform.position).normalized;
-            float alignmentWithOpponentGoal = Vector3.Dot(directionToOpponentGoal, transform.forward);
-            float alignmentWithOwnGoal = Vector3.Dot(directionToOwnGoal, transform.forward);
+            // Calculate initial intensity based on collision speed
+            float collisionSpeed = c.relativeVelocity.magnitude;
+            float initialIntensity = Mathf.Clamp01(collisionSpeed / 10f); // Scale to a 0-1 range
 
-            // Reward for kicking towards the opponent's goal
-            if (alignmentWithOpponentGoal > 0.8f)
+            if (c.gameObject.CompareTag("ball"))
             {
-                AddReward(0.5f); // Positive reward for pushing towards the opponent's goal
-            }
+                // Trigger sound for ball collision
+                soundSensor.TriggerBallWithAgentCollision(transform.position, initialIntensity);
 
-            // Negative reward for kicking towards the own goal
-            if (alignmentWithOwnGoal > 0.8f) 
+                // Existing logic for rewards and physics
+                Vector3 directionToOpponentGoal = (opponentGoalPosition - transform.position).normalized;
+                Vector3 directionToOwnGoal = (ownGoalPosition - transform.position).normalized;
+                float alignmentWithOpponentGoal = Vector3.Dot(directionToOpponentGoal, transform.forward);
+                float alignmentWithOwnGoal = Vector3.Dot(directionToOwnGoal, transform.forward);
+
+                if (alignmentWithOpponentGoal > 0.8f)
+                {
+                    AddReward(0.5f); // Positive reward
+                }
+
+                if (alignmentWithOwnGoal > 0.8f)
+                {
+                    AddReward(-0.5f); // Negative reward
+                }
+
+                var force = k_Power * m_KickPower;
+                if (position == Position.Goalie) force = k_Power;
+                var dir = c.contacts[0].point - transform.position;
+                dir = dir.normalized;
+                c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
+
+                AddReward(.2f * m_BallTouch);
+            }
+            else if (c.gameObject.CompareTag("wall"))
             {
-                AddReward(-0.5f); // Negative reward for pushing towards the own goal
+                // Trigger sound for wall collision
+                soundSensor.TriggerAgentWithObjectCollision(transform.position, initialIntensity);
             }
-
-            // Apply the kick to the ball
-            var force = k_Power * m_KickPower;
-            if (position == Position.Goalie) force = k_Power;
-            var dir = c.contacts[0].point - transform.position;
-            dir = dir.normalized;
-            c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
-
-            // Ball touch reward (optional, if not already included)
-            AddReward(.2f * m_BallTouch);
+            else if (c.gameObject.CompareTag("object"))
+            {
+                // Trigger sound for ball with object collision
+                soundSensor.TriggerBallWithObjectCollision(transform.position, initialIntensity);
+            }
         }
     }
+
 
 
     public override void OnEpisodeBegin()
     {
         m_BallTouch = m_ResetParams.GetWithDefault("ball_touch", 0);
+
+        // Reset the sound sensor
+        var soundSensor = GetComponent<SoundSensor>();
+        if (soundSensor != null)
+        {
+            soundSensor.ResetSound();
+        }
     }
+
 
 }

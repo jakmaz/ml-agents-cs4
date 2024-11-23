@@ -16,31 +16,16 @@ public class SoccerEnvController : MonoBehaviour
         public Rigidbody Rb;
     }
 
-
-    /// <summary>
-    /// Max Academy steps before this platform resets
-    /// </summary>
-    /// <returns></returns>
     [Tooltip("Max Environment Steps")] public int MaxEnvironmentSteps = 25000;
-
-    /// <summary>
-    /// The area bounds.
-    /// </summary>
-
-    /// <summary>
-    /// We will be changing the ground material based on success/failue
-    /// </summary>
 
     public GameObject ball;
     [HideInInspector]
     public Rigidbody ballRb;
     Vector3 m_BallStartingPos;
 
-    //List of Agents On Platform
     public List<PlayerInfo> AgentsList = new List<PlayerInfo>();
 
     private SoccerSettings m_SoccerSettings;
-
 
     private SimpleMultiAgentGroup m_BlueAgentGroup;
     private SimpleMultiAgentGroup m_PurpleAgentGroup;
@@ -49,13 +34,21 @@ public class SoccerEnvController : MonoBehaviour
 
     void Start()
     {
-
         m_SoccerSettings = FindObjectOfType<SoccerSettings>();
-        // Initialize TeamManager
         m_BlueAgentGroup = new SimpleMultiAgentGroup();
         m_PurpleAgentGroup = new SimpleMultiAgentGroup();
+
         ballRb = ball.GetComponent<Rigidbody>();
         m_BallStartingPos = new Vector3(ball.transform.position.x, ball.transform.position.y, ball.transform.position.z);
+
+        // Attach a collider and a SoundSensor to the ball for collision detection
+        var soundSensor = ball.GetComponent<SoundSensor>();
+        if (soundSensor == null)
+        {
+            soundSensor = ball.AddComponent<SoundSensor>();
+            soundSensor.agentTransform = ball.transform;
+        }
+
         foreach (var item in AgentsList)
         {
             item.StartingPos = item.Agent.transform.position;
@@ -84,7 +77,6 @@ public class SoccerEnvController : MonoBehaviour
         }
     }
 
-
     public void ResetBall()
     {
         var randomPosX = Random.Range(-2.5f, 2.5f);
@@ -93,7 +85,6 @@ public class SoccerEnvController : MonoBehaviour
         ball.transform.position = m_BallStartingPos + new Vector3(randomPosX, 0f, randomPosZ);
         ballRb.velocity = Vector3.zero;
         ballRb.angularVelocity = Vector3.zero;
-
     }
 
     public void GoalTouched(Team scoredTeam)
@@ -111,15 +102,12 @@ public class SoccerEnvController : MonoBehaviour
         m_PurpleAgentGroup.EndGroupEpisode();
         m_BlueAgentGroup.EndGroupEpisode();
         ResetScene();
-
     }
-
 
     public void ResetScene()
     {
         m_ResetTimer = 0;
 
-        //Reset Agents
         foreach (var item in AgentsList)
         {
             var randomPosX = Random.Range(-5f, 5f);
@@ -132,7 +120,23 @@ public class SoccerEnvController : MonoBehaviour
             item.Rb.angularVelocity = Vector3.zero;
         }
 
-        //Reset Ball
         ResetBall();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            // Calculate initial intensity based on collision speed
+            float collisionSpeed = collision.relativeVelocity.magnitude;
+            float initialIntensity = Mathf.Clamp01(collisionSpeed / 10f); // Scale to a 0-1 range
+
+            var soundSensor = ball.GetComponent<SoundSensor>();
+            if (soundSensor != null)
+            {
+                // Trigger sound for ball with object collision
+                soundSensor.TriggerBallWithObjectCollision(ball.transform.position, initialIntensity);
+            }
+        }
     }
 }
