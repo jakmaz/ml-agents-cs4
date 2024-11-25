@@ -213,6 +213,20 @@ public class AgentSoccer : Agent
             dir = dir.normalized;
             c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
         }
+
+        // Collision avoidance logic for fouls
+        if (avoidFouls)
+        {
+            // Penalize for colliding with opposing players
+            if (team == Team.Blue && c.gameObject.CompareTag("purpleAgent"))
+            {
+                AddReward(-0.01f); // Penalize blue agent for colliding with a purple agent
+            }
+            else if (team == Team.Purple && c.gameObject.CompareTag("blueAgent"))
+            {
+                AddReward(-0.01f); // Penalize purple agent for colliding with a blue agent
+            }
+        }
     }
 
     public override void OnEpisodeBegin()
