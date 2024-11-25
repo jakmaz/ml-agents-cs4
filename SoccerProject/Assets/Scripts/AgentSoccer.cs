@@ -48,6 +48,12 @@ public class AgentSoccer : Agent
 
     EnvironmentParameters m_ResetParams;
 
+    [Header("Extended Features")]
+    public bool avoidFouls = false;
+    public bool noBackRays = false;
+    public bool decoupledVision = false;
+    public bool soundSensor = false;
+
     public override void Initialize()
     {
         SoccerEnvController envController = GetComponentInParent<SoccerEnvController>();
