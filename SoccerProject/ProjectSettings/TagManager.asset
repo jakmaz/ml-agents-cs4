@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - wall
+  - blueGoal
+  - purpleGoal
+  - purpleAgent
+  - blueAgent
+  - ball
+  - reverseRays
   layers:
   - Default
   - TransparentFX

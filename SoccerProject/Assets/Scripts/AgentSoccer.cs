@@ -38,6 +38,9 @@ public class AgentSoccer : Agent
     float m_Existential;
     float m_LateralSpeed;
     float m_ForwardSpeed;
+    public float VisionAngle => m_VisionAngle;
+    private float m_VisionAngle = 0f; // Current vision angle relative to forward direction
+    private float m_VisionRotateSpeed = 180f; // Degrees per second
 
 
     [HideInInspector]
@@ -147,6 +150,13 @@ public class AgentSoccer : Agent
         var rightAxis = act[1];
         var rotateAxis = act[2];
 
+        int visionAxis = 0;
+
+        if (decoupledVision && act.Length > 3)
+        {
+            visionAxis = act[3]; // Only access visionAxis if it exists
+        }
+
         switch (forwardAxis)
         {
             case 1:
@@ -178,9 +188,34 @@ public class AgentSoccer : Agent
                 break;
         }
 
+        switch (visionAxis)
+        {
+            case 1:
+                m_VisionAngle -= m_VisionRotateSpeed * Time.deltaTime;
+                break;
+            case 2:
+                m_VisionAngle += m_VisionRotateSpeed * Time.deltaTime;
+                break;
+        }
+
+        // Vision control logic
+        if (decoupledVision)
+        {
+            switch (visionAxis)
+            {
+                case 1:
+                    m_VisionAngle -= m_VisionRotateSpeed * Time.deltaTime;
+                    break;
+                case 2:
+                    m_VisionAngle += m_VisionRotateSpeed * Time.deltaTime;
+                    break;
+            }
+            m_VisionAngle = Mathf.Repeat(m_VisionAngle, 360f);
+        }
+
+        // Apply movement and rotation
         transform.Rotate(rotateDir, Time.deltaTime * 100f);
-        agentRb.AddForce(dirToGo * m_SoccerSettings.agentRunSpeed,
-            ForceMode.VelocityChange);
+        agentRb.AddForce(dirToGo * m_SoccerSettings.agentRunSpeed, ForceMode.VelocityChange);
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -229,6 +264,19 @@ public class AgentSoccer : Agent
         if (Input.GetKey(KeyCode.Q))
         {
             discreteActionsOut[1] = 2;
+        }
+
+        // Vision control
+        if (decoupledVision)
+        {
+            if (Input.GetKey(KeyCode.Z))
+            {
+                discreteActionsOut[3] = 1; // Rotate vision left
+            }
+            if (Input.GetKey(KeyCode.C))
+            {
+                discreteActionsOut[3] = 2; // Rotate vision right
+            }
         }
     }
     /// <summary>
