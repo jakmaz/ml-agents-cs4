@@ -508,7 +508,47 @@ PrefabInstance:
       objectReference: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
     - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
       propertyPath: m_BehaviorType
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114387866097048300, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[3]
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114492261207303438, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
       propertyPath: m_Enabled
@@ -530,6 +570,46 @@ PrefabInstance:
       propertyPath: m_Model
       value: 
       objectReference: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114734187185382186, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 114850431417842684, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -560,6 +640,46 @@ PrefabInstance:
       objectReference: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
     - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
       propertyPath: m_BehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[3]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316085536305919483, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[3]
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4407673136905670519, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
@@ -618,6 +738,46 @@ PrefabInstance:
       propertyPath: m_Model
       value: 
       objectReference: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577361778124631730, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[3]
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9136065168043485173, guid: 54f3340298537426e96a6cc530e2d5d8, type: 3}
       propertyPath: m_TagString
       value: reverseRays
