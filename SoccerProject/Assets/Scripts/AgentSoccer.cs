@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
+using Unity.MLAgents.Sensors;
 
 public enum Team
 {
@@ -99,6 +100,40 @@ public class AgentSoccer : Agent
         agentRb.maxAngularVelocity = 500;
 
         m_ResetParams = Academy.Instance.EnvironmentParameters;
+
+        // Add the "No Back Rays" functionality here
+        HandleNoBackRays();
+    }
+
+    private void HandleNoBackRays()
+    {
+        // Find all child objects with the tag "ReverseRays"
+        RayPerceptionSensorComponent3D reverseRaySensor = null;
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("reverseRays"))
+            {
+                reverseRaySensor = child.GetComponent<RayPerceptionSensorComponent3D>();
+                break;
+            }
+        }
+
+        if (reverseRaySensor != null)
+        {
+            if (noBackRays)
+            {
+                DestroyImmediate(reverseRaySensor); // Completely remove the sensor
+                Debug.Log($"ReverseRays sensor has been destroyed.");
+            }
+            else
+            {
+                Debug.Log($"ReverseRays sensor is enabled.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"No RayPerceptionSensorComponent3D with tag 'ReverseRays' found!");
+        }
     }
 
     public void MoveAgent(ActionSegment<int> act)
