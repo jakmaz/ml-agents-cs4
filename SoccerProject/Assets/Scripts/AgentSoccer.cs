@@ -57,9 +57,11 @@ public class AgentSoccer : Agent
     public bool noBackRays = false;
     public bool decoupledVision = false;
     public bool soundSensor = false;
+    private SoundSensor m_SoundSensor;
 
     public override void Initialize()
     {
+        Debug.Log("AgentSoccer Initialize called.");
         SoccerEnvController envController = GetComponentInParent<SoccerEnvController>();
         if (envController != null)
         {
@@ -104,8 +106,23 @@ public class AgentSoccer : Agent
 
         m_ResetParams = Academy.Instance.EnvironmentParameters;
 
+        if (soundSensor)
+        {
+            Debug.Log("ENABLED");
+        } 
+        else 
+        {
+            Debug.Log("DISABLED");
+        }
+        
         // Add the "No Back Rays" functionality here
         HandleNoBackRays();
+        HandleSoundSensor();
+
+        if (soundSensor && m_SoundSensor != null)
+        {
+            Debug.Log("SoundSensor successfully initialized.");
+        }
     }
 
     private void HandleNoBackRays()
@@ -136,6 +153,70 @@ public class AgentSoccer : Agent
         else
         {
             Debug.LogWarning($"No RayPerceptionSensorComponent3D with tag 'ReverseRays' found!");
+        }
+    }
+
+    private void HandleSoundSensor()
+    {
+        if (soundSensor)
+        {
+            if (m_SoundSensor == null)
+            {
+                m_SoundSensor = gameObject.AddComponent<SoundSensor>();
+                m_SoundSensor.agentTransform = transform;
+            }
+
+            if (m_SoundSensor.agentTransform == null)
+            {
+                //m_SoundSensor.Initialize(transform);
+                Debug.LogError("Failed to initialize SoundSensor: agentTransform is null!");
+            }
+        }
+        else
+        {
+            if (m_SoundSensor != null)
+            {
+                DestroyImmediate(m_SoundSensor);
+                m_SoundSensor = null;
+            }
+        }
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        Debug.Log("CollectObservations called.");
+
+        if (sensor == null)
+        {
+            Debug.LogError("VectorSensor is null. This should never happen!");
+            return;
+        }
+        
+        base.CollectObservations(sensor);
+
+        if (m_SoundSensor == null) 
+        {
+            Debug.LogWarning("CollectObservations skipped: SoundSensor not initialized.");
+            return; 
+        }
+
+        if (soundSensor) 
+        {
+            if(m_SoundSensor != null && m_SoundSensor.agentTransform != null) 
+            {
+                Debug.Log("SoundSensor updating observations.");
+                m_SoundSensor.UpdateSensor(sensor);
+            }
+
+        }
+        else
+        {
+            Debug.LogError("SS is enabled but fails to initialise");
+            // SoundSensor soundSensorComponent = GetComponent<SoundSensor>();
+            // if(soundSensorComponent != null)
+            // {
+            //     soundSensorComponent.UpdateSensor(sensor);
+            // }
         }
     }
 
@@ -284,6 +365,11 @@ public class AgentSoccer : Agent
     /// </summary>
     public void OnCollisionEnter(Collision c)
     {
+        if(c.gameObject.CompareTag("ball"))
+        {
+            float intensity = 1.0f;
+            m_SoundSensor?.TriggerBallWithObjectCollision(c.contacts[0].point, intensity);
+        }
         var force = k_Power * m_KickPower;
         if (position == Position.Goalie)
         {
@@ -314,6 +400,15 @@ public class AgentSoccer : Agent
 
     public override void OnEpisodeBegin()
     {
+        if (soundSensor && (m_SoundSensor == null || m_SoundSensor.agentTransform == null))
+        {
+            Debug.LogWarning("SoundSensor was not initialized during Initialize. Initializing now.");
+            HandleSoundSensor();
+        } 
+        else if(soundSensor && m_SoundSensor != null)
+        {
+            m_SoundSensor.ResetSound();
+        }
         m_BallTouch = m_ResetParams.GetWithDefault("ball_touch", 0);
     }
 
