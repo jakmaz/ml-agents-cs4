@@ -1,0 +1,66 @@
+{
+    "SoccerTwos": {
+        "checkpoints": [
+            {
+                "steps": 499218,
+                "file_path": "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-499218.onnx",
+                "reward": 0.0,
+                "creation_time": 1733004427.22088,
+                "auxillary_file_paths": [
+                    "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-499218.pt"
+                ]
+            },
+            {
+                "steps": 999846,
+                "file_path": "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-999846.onnx",
+                "reward": 0.0,
+                "creation_time": 1733005038.7703903,
+                "auxillary_file_paths": [
+                    "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-999846.pt"
+                ]
+            },
+            {
+                "steps": 1499068,
+                "file_path": "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-1499068.onnx",
+                "reward": 0.0,
+                "creation_time": 1733005655.9316573,
+                "auxillary_file_paths": [
+                    "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-1499068.pt"
+                ]
+            },
+            {
+                "steps": 1999518,
+                "file_path": "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-1999518.onnx",
+                "reward": 0.0,
+                "creation_time": 1733006271.7154825,
+                "auxillary_file_paths": [
+                    "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-1999518.pt"
+                ]
+            },
+            {
+                "steps": 2000518,
+                "file_path": "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-2000518.onnx",
+                "reward": 0.0,
+                "creation_time": 1733006271.840377,
+                "auxillary_file_paths": [
+                    "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-2000518.pt"
+                ]
+            }
+        ],
+        "elo": 1197.4837443333633,
+        "final_checkpoint": {
+            "steps": 2000518,
+            "file_path": "results\\8P_Decoupled\\SoccerTwos.onnx",
+            "reward": 0.0,
+            "creation_time": 1733006271.840377,
+            "auxillary_file_paths": [
+                "results\\8P_Decoupled\\SoccerTwos\\SoccerTwos-2000518.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}
