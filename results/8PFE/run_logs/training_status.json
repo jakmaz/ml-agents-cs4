@@ -1,0 +1,69 @@
+{
+    "ball_touch": {
+        "lesson_num": 0
+    },
+    "SoccerTwos": {
+        "checkpoints": [
+            {
+                "steps": 499370,
+                "file_path": "results\\8PFE\\SoccerTwos\\SoccerTwos-499370.onnx",
+                "reward": -0.015642856264353862,
+                "creation_time": 1733052758.7790017,
+                "auxillary_file_paths": [
+                    "results\\8PFE\\SoccerTwos\\SoccerTwos-499370.pt"
+                ]
+            },
+            {
+                "steps": 999006,
+                "file_path": "results\\8PFE\\SoccerTwos\\SoccerTwos-999006.onnx",
+                "reward": -0.012571427039802074,
+                "creation_time": 1733053358.4016247,
+                "auxillary_file_paths": [
+                    "results\\8PFE\\SoccerTwos\\SoccerTwos-999006.pt"
+                ]
+            },
+            {
+                "steps": 1499348,
+                "file_path": "results\\8PFE\\SoccerTwos\\SoccerTwos-1499348.onnx",
+                "reward": -0.015684209224817,
+                "creation_time": 1733053945.4915965,
+                "auxillary_file_paths": [
+                    "results\\8PFE\\SoccerTwos\\SoccerTwos-1499348.pt"
+                ]
+            },
+            {
+                "steps": 1999666,
+                "file_path": "results\\8PFE\\SoccerTwos\\SoccerTwos-1999666.onnx",
+                "reward": -0.01699999797468384,
+                "creation_time": 1733054551.8948555,
+                "auxillary_file_paths": [
+                    "results\\8PFE\\SoccerTwos\\SoccerTwos-1999666.pt"
+                ]
+            },
+            {
+                "steps": 2001666,
+                "file_path": "results\\8PFE\\SoccerTwos\\SoccerTwos-2001666.onnx",
+                "reward": -0.01024999824585393,
+                "creation_time": 1733054552.084829,
+                "auxillary_file_paths": [
+                    "results\\8PFE\\SoccerTwos\\SoccerTwos-2001666.pt"
+                ]
+            }
+        ],
+        "elo": 1191.2529750623498,
+        "final_checkpoint": {
+            "steps": 2001666,
+            "file_path": "results\\8PFE\\SoccerTwos.onnx",
+            "reward": -0.01024999824585393,
+            "creation_time": 1733054552.084829,
+            "auxillary_file_paths": [
+                "results\\8PFE\\SoccerTwos\\SoccerTwos-2001666.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.5.1+cpu"
+    }
+}
