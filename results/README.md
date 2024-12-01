@@ -14,10 +14,14 @@ I figured it'd be good to have a set way of naming these things. My simple syste
     * V : **V**anilla (AKA base model with no changes)
 * xxxE : indicates we are using some environmental variable*
 
+## EXAMPLE for your convenience :)
+
 Basically, a folder called 3PFSE means that the model is trained:
 * using three pitches
 * with fair soccer + the sound sensor
 * with the environmental variable configured to something
+
+## ABOUT ENV VARIABLE
 
 Currently, the code only supports (and always did support) only one such variable, which is the ball_touch, configured in the ``yaml`` file.
 But oh well. I also didn't bother actually naming them to say how these envs are set, but I'll tell you here that the existing models all have ``ball_touch`` set to 0.02, a somewhat arbitrary decision.
