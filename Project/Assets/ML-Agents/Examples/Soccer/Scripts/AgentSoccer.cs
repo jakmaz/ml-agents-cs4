@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
+using Unity.MLAgents.Sensors;
 
 public enum Team
 {
@@ -161,21 +162,15 @@ public class AgentSoccer : Agent
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        // Handle sound observations
         var soundSensor = GetComponent<SoundSensor>();
         if (soundSensor != null)
         {
-            soundSensor.ResetSound();
+            var vectorSensor = new VectorSensor(5, "SoundSensor");
+            soundSensor.UpdateSensor(vectorSensor);
         }
 
-        if (position == Position.Goalie)
-        {
-            AddReward(m_Existential);
-        }
-        else if (position == Position.Striker)
-        {
-            AddReward(-m_Existential);
-        }
-
+        // Existing logic
         MoveAgent(actionBuffers.DiscreteActions);
 
         float distanceToOpponentGoal = Vector3.Distance(transform.position, opponentGoalPosition);
@@ -218,6 +213,7 @@ public class AgentSoccer : Agent
             discreteActionsOut[1] = 2;
         }
     }
+
     /// <summary>
     /// Used to provide a "kick" to the ball.
     /// </summary>
@@ -234,6 +230,11 @@ public class AgentSoccer : Agent
             {
                 // Trigger sound for ball collision
                 soundSensor.TriggerBallWithAgentCollision(transform.position, initialIntensity);
+
+                var vectorSensor = new VectorSensor(5, "SoundSensor");
+                soundSensor.UpdateSensor(vectorSensor);
+
+                BroadcastSoundToOtherAgents(transform.position, SoundType.BallWithAgentCollision, initialIntensity);
 
                 // Existing logic for rewards and physics
                 Vector3 directionToOpponentGoal = (opponentGoalPosition - transform.position).normalized;
@@ -263,16 +264,38 @@ public class AgentSoccer : Agent
             {
                 // Trigger sound for wall collision
                 soundSensor.TriggerAgentWithObjectCollision(transform.position, initialIntensity);
-            }
-            else if (c.gameObject.CompareTag("object"))
-            {
-                // Trigger sound for ball with object collision
-                soundSensor.TriggerBallWithObjectCollision(transform.position, initialIntensity);
+
+                var vectorSensor = new VectorSensor(5, "SoundSensor");
+                soundSensor.UpdateSensor(vectorSensor);
+
+                BroadcastSoundToOtherAgents(transform.position, SoundType.AgentWithObjectCollision, initialIntensity);
+
+                Debug.Log("Collision with wall detected.");
             }
         }
     }
 
+    void BroadcastSoundToOtherAgents(Vector3 soundPosition, SoundType soundType, float initialIntensity)
+    {
+        // Find all AgentSoccer objects in the scene
+        AgentSoccer[] allAgents = FindObjectsOfType<AgentSoccer>();
+        foreach (var agent in allAgents)
+        {
+            if (agent == this) continue; // Skip the agent producing the sound
 
+            var soundSensor = agent.GetComponent<SoundSensor>();
+            if (soundSensor != null)
+            {
+                float distance = Vector3.Distance(agent.transform.position, soundPosition);
+
+                if (distance <= soundSensor.maxSoundRange)
+                {
+                    // Broadcast sound to agents within range
+                    soundSensor.SetSoundData(soundPosition, soundType, initialIntensity);
+                }
+            }
+        }
+    }
 
     public override void OnEpisodeBegin()
     {

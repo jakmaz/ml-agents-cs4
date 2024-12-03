@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
+using Unity.MLAgents.Sensors;
 
 public class SoccerEnvController : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class SoccerEnvController : MonoBehaviour
 
     private int m_ResetTimer;
 
+    // Reference to the ball's sound sensor
+    private SoundSensor ballSoundSensor;
+
     void Start()
     {
         m_SoccerSettings = FindObjectOfType<SoccerSettings>();
@@ -42,11 +46,11 @@ public class SoccerEnvController : MonoBehaviour
         m_BallStartingPos = new Vector3(ball.transform.position.x, ball.transform.position.y, ball.transform.position.z);
 
         // Attach a collider and a SoundSensor to the ball for collision detection
-        var soundSensor = ball.GetComponent<SoundSensor>();
-        if (soundSensor == null)
+        ballSoundSensor = ball.GetComponent<SoundSensor>();
+        if (ballSoundSensor == null)
         {
-            soundSensor = ball.AddComponent<SoundSensor>();
-            soundSensor.agentTransform = ball.transform;
+            ballSoundSensor = ball.AddComponent<SoundSensor>();
+            ballSoundSensor.agentTransform = ball.transform;
         }
 
         foreach (var item in AgentsList)
@@ -69,6 +73,26 @@ public class SoccerEnvController : MonoBehaviour
     void FixedUpdate()
     {
         m_ResetTimer += 1;
+
+        // Regularly update ball's sound sensor
+        if (ballSoundSensor != null)
+        {
+            var vectorSensor = new VectorSensor(5, "SoundSensor");
+            ballSoundSensor.UpdateSensor(vectorSensor);
+        }
+
+        // Check for collisions manually (if OnCollisionEnter is not working)
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 0.5f); // Adjust radius as needed
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.CompareTag("wall"))
+            {
+                Debug.Log("Detected collision manually with: " + hitCollider.gameObject.name);
+                HandleCollision(hitCollider); // Call your logic here
+            }
+        }
+
+        // Check if environment should reset
         if (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0)
         {
             m_BlueAgentGroup.GroupEpisodeInterrupted();
@@ -76,6 +100,22 @@ public class SoccerEnvController : MonoBehaviour
             ResetScene();
         }
     }
+
+    // Function to handle collision logic
+    private void HandleCollision(Collider collider)
+    {
+        // Logic for handling collision
+        float collisionSpeed = (transform.position - collider.transform.position).magnitude; // Example speed calculation
+        float initialIntensity = Mathf.Clamp01(collisionSpeed / 10f); // Scale to 0-1 range
+        Vector3 soundPosition = transform.position;
+
+        if (ballSoundSensor != null)
+        {
+            ballSoundSensor.TriggerBallWithObjectCollision(soundPosition, initialIntensity);
+            BroadcastSoundToAgents(soundPosition, SoundType.BallWithObjectCollision, initialIntensity);
+        }
+    }
+
 
     public void ResetBall()
     {
@@ -123,19 +163,15 @@ public class SoccerEnvController : MonoBehaviour
         ResetBall();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void BroadcastSoundToAgents(Vector3 soundPosition, SoundType soundType, float initialIntensity)
     {
-        if (collision.gameObject.CompareTag("wall"))
+        foreach (var player in AgentsList)
         {
-            // Calculate initial intensity based on collision speed
-            float collisionSpeed = collision.relativeVelocity.magnitude;
-            float initialIntensity = Mathf.Clamp01(collisionSpeed / 10f); // Scale to a 0-1 range
-
-            var soundSensor = ball.GetComponent<SoundSensor>();
+            var soundSensor = player.Agent.GetComponent<SoundSensor>();
             if (soundSensor != null)
             {
-                // Trigger sound for ball with object collision
-                soundSensor.TriggerBallWithObjectCollision(ball.transform.position, initialIntensity);
+                soundSensor.SetSoundData(soundPosition, soundType, initialIntensity);
+                Debug.Log($"Broadcasting sound to {player.Agent.name}: Position={soundPosition}, Intensity={initialIntensity}, Type={soundType}");
             }
         }
     }

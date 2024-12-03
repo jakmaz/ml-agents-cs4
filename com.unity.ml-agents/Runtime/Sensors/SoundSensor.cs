@@ -44,6 +44,17 @@ public class SoundSensor : SensorComponent
             isSoundDetected = soundIntensity > 0; // Detect sound only if within range
             currentPriority = priority;
         }
+
+        //Debug.Log($"SetSoundData called. Position={soundPosition}, Type={type}, Intensity={initialIntensity}");
+
+    }
+
+    private void Awake()
+    {
+        if (agentTransform == null)
+        {
+            agentTransform = transform;
+        }
     }
 
     // Trigger sound events with initial intensity
@@ -86,21 +97,24 @@ public class SoundSensor : SensorComponent
     {
         if (isSoundDetected)
         {
-            // Add sound direction (x, y, z)
+            // Add valid sound data
             sensor.AddObservation(soundDirection);
-
-            // Add sound intensity
             sensor.AddObservation(soundIntensity);
-
-            // Add sound type as integer
             sensor.AddObservation((int)soundType);
+
+            Debug.Log($"SoundSensor Observations: Direction={soundDirection}, Intensity={soundIntensity}, Type={(int)soundType}");
         }
         else
         {
-            // Add zero values when no sound is detected
-            sensor.AddObservation(Vector3.zero);
-            sensor.AddObservation(0); // Intensity
-            sensor.AddObservation(0); // Sound type
+            // Add default "no sound" data
+            sensor.AddObservation(Vector3.zero); // No direction
+            sensor.AddObservation(0);           // No intensity
+            sensor.AddObservation(0);           // Default type
+
+            //Debug.Log("No sound detected. Adding zero observations.");
         }
+
+        // Reset detection state for the next frame
+        ResetSound();
     }
 }
