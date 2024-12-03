@@ -2157,7 +2157,6 @@ GameObject:
   - component: {fileID: 114492261207303438}
   - component: {fileID: 114320493772006642}
   - component: {fileID: 9152743230243588598}
-  - component: {fileID: 798330825103180240}
   m_Layer: 0
   m_Name: PurpleStriker
   m_TagString: purpleAgent
@@ -2252,7 +2251,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: ead8d97cce600644d9371e259f5c43fa, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: SoccerTwos
@@ -2277,10 +2276,17 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   team: 0
+  opponentGoalPosition: {x: 0, y: 0, z: 0}
+  ownGoalPosition: {x: 0, y: 0, z: 0}
   position: 2
   agentRb: {fileID: 0}
   initialPos: {x: 0, y: 0, z: 0}
   rotSign: 0
+  ball: {fileID: 0}
+  avoidFouls: 0
+  noBackRays: 0
+  decoupledVision: 0
+  soundSensor: 0
 --- !u!114 &114320493772006642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2327,27 +2333,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
---- !u!114 &798330825103180240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1095606497496374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  team: 0
-  position: 0
-  agentRb: {fileID: 0}
-  initialPos: {x: 0, y: 0, z: 0}
-  rotSign: 0
 --- !u!1 &1101518129530804
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,7 +2431,6 @@ GameObject:
   - component: {fileID: 114850431417842684}
   - component: {fileID: 114516244030127556}
   - component: {fileID: 404683423509059512}
-  - component: {fileID: 8557426429796011212}
   m_Layer: 0
   m_Name: BlueStriker
   m_TagString: blueAgent
@@ -2541,7 +2525,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 1dde4763b424f5042a974fd16380867a, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: SoccerTwos
@@ -2566,10 +2550,17 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   team: 1
+  opponentGoalPosition: {x: 0, y: 0, z: 0}
+  ownGoalPosition: {x: 0, y: 0, z: 0}
   position: 2
   agentRb: {fileID: 0}
   initialPos: {x: 0, y: 0, z: 0}
   rotSign: 0
+  ball: {fileID: 0}
+  avoidFouls: 0
+  noBackRays: 0
+  decoupledVision: 1
+  soundSensor: 0
 --- !u!114 &114516244030127556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2616,27 +2607,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
---- !u!114 &8557426429796011212
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1131626411948014}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  team: 0
-  position: 0
-  agentRb: {fileID: 0}
-  initialPos: {x: 0, y: 0, z: 0}
-  rotSign: 0
 --- !u!1 &1141134673700168
 GameObject:
   m_ObjectHideFlags: 0
@@ -4351,7 +4321,6 @@ GameObject:
   - component: {fileID: 5320024511406682322}
   - component: {fileID: 1023485123796557062}
   - component: {fileID: 8734522883866558980}
-  - component: {fileID: 6283479335904612434}
   m_Layer: 0
   m_Name: PurpleStriker (1)
   m_TagString: purpleAgent
@@ -4446,7 +4415,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: ead8d97cce600644d9371e259f5c43fa, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: SoccerTwos
@@ -4471,10 +4440,17 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   team: 0
+  opponentGoalPosition: {x: 0, y: 0, z: 0}
+  ownGoalPosition: {x: 0, y: 0, z: 0}
   position: 2
   agentRb: {fileID: 0}
   initialPos: {x: 0, y: 0, z: 0}
   rotSign: 0
+  ball: {fileID: 0}
+  avoidFouls: 0
+  noBackRays: 0
+  decoupledVision: 0
+  soundSensor: 0
 --- !u!114 &1023485123796557062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4521,27 +4497,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
---- !u!114 &6283479335904612434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6257467487437560250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  team: 0
-  position: 0
-  agentRb: {fileID: 0}
-  initialPos: {x: 0, y: 0, z: 0}
-  rotSign: 0
 --- !u!1 &6442519122303792292
 GameObject:
   m_ObjectHideFlags: 0
@@ -4894,7 +4849,6 @@ GameObject:
   - component: {fileID: 5379409612883756837}
   - component: {fileID: 2562571719799803906}
   - component: {fileID: 1018414316889932458}
-  - component: {fileID: 6939753220642424022}
   m_Layer: 0
   m_Name: BlueStriker (1)
   m_TagString: blueAgent
@@ -4989,7 +4943,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 8cd4584c2f2cb4c5fb51675d364e10ec, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 1dde4763b424f5042a974fd16380867a, type: 3}
   m_InferenceDevice: 2
   m_BehaviorType: 0
   m_BehaviorName: SoccerTwos
@@ -5014,10 +4968,17 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   team: 1
+  opponentGoalPosition: {x: 0, y: 0, z: 0}
+  ownGoalPosition: {x: 0, y: 0, z: 0}
   position: 2
   agentRb: {fileID: 0}
   initialPos: {x: 0, y: 0, z: 0}
   rotSign: 0
+  ball: {fileID: 0}
+  avoidFouls: 0
+  noBackRays: 0
+  decoupledVision: 1
+  soundSensor: 0
 --- !u!114 &2562571719799803906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5064,27 +5025,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
---- !u!114 &6939753220642424022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8360301818957399454}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4755010ebd68042158f2fe823cbb5f41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  team: 0
-  position: 0
-  agentRb: {fileID: 0}
-  initialPos: {x: 0, y: 0, z: 0}
-  rotSign: 0
 --- !u!1 &8673569163220857793
 GameObject:
   m_ObjectHideFlags: 0
