@@ -1,29 +1,73 @@
-# GENERAL
+# Soccer Agent Training Guide
 
-I excluded the checkpoints created in-between starting training and reaching max step (2M in our case) for convenience.
+This guide provides a step-by-step process for training the soccer agent with various features. Each feature is tested and trained individually. Follow the instructions carefully to ensure a smooth training process.
 
-## A NOTE ON THE FOLDER NAMES
+## Training Setup
 
-I figured it'd be good to have a set way of naming these things. My simple system works as follows:
-* nPxx : n Pitches used
-* xxB/D/F/Vx : indicates what model is trained
-    * B : No **B**ackrays
-    * D : **D**ecoupled movement/vision
-    * F : **F**air Soccer (AKA **F**ouls punished)
-    * S : **S**ound Sensor
-    * V : **V**anilla (AKA base model with no changes)
-* xxxE : indicates we are using some environmental variable*
+### 1. Navigate to the Experiment Directory
 
-## EXAMPLE for your convenience :)
+First, navigate to the `Experiments` directory where the configuration files and training scripts are located. Use the following command to change directories:
 
-Basically, a folder called 3PFSE means that the model is trained:
-* using three pitches
-* with fair soccer + the sound sensor
-* with the environmental variable configured to something
+```bash
+cd /path/to/ml-agents-cs4/Experiments
 
-## ABOUT ENV VARIABLE
+```
 
-Currently, the code only supports (and always did support) only one such variable, which is the ball_touch, configured in the ``yaml`` file.
-But oh well. I also didn't bother actually naming them to say how these envs are set, but I'll tell you here that the existing models all have ``ball_touch`` set to 0.02, a somewhat arbitrary decision.
+### 2. Training Command
 
-Contact me (Vjosa) if you want to understand more/have any question or remark about this or HATE the naming scheme :)
+To start the training process, run the following command. This will use the `config.yaml` file located in the `Experiments` directory. Be sure to replace `<experiment_name>` with a unique name for the experiment.
+
+```bash
+mlagents-learn config.yaml --run-id=<experiment_name>
+```
+
+**Example**:
+
+```bash
+mlagents-learn config.yaml --run-id=avoid-fouls-experiment
+```
+
+### 3. Start Training
+
+Once the training command is executed, the model will start training according to the configurations set in the `config.yaml` file.
+
+### 4. Monitoring the Training Process
+
+You can monitor the progress of the training in two ways:
+
+- **Unity Editor**: View the training process in real-time.
+- **Logs**: Inspect the training logs generated during the process.
+
+If you need to stop the training, press `Ctrl+C` in the terminal.
+
+---
+
+## Experiment Naming Convention
+
+For consistency, it is helpful to follow a specific naming system for experiments. The naming convention works as follows:
+
+- **nPxx**: Represents the number of pitches used in the environment.
+- **xxB/D/F/Vx**: Indicates the model’s configuration.
+  - `B`: No **B**ackrays
+  - `D`: **D**ecoupled movement/vision
+  - `F`: **F**air Soccer (i.e., fouls are punished)
+  - `S`: **S**ound Sensor
+  - `V`: **V**anilla (Base model with no changes)
+- **xxxE**: Indicates the environmental variable in use.
+
+### Example: `3PFSE`
+
+This folder name means the model is trained with:
+
+- **3 pitches** (`3P`)
+- **Fair Soccer** (fouls punished) + **Sound Sensor** (`FS`)
+- An **Environmental Variable** (`E`)
+
+---
+
+## Environment Variables
+
+Currently, the code supports only one environmental variable, `ball_touch`, which can be configured in the `yaml` file. The value for `ball_touch` is set to `0.02` by default, though this is an arbitrary value.
+
+If you're interested in understanding more about the environmental variables or wish to modify this setting, please refer to the relevant configuration files in the `Experiments` directory.
+

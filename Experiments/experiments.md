@@ -38,30 +38,3 @@ This guide outlines how to train the soccer agent for each feature. Each feature
    ```bash
    mv /path/to/ml-agents-cs4/result/<experiment_name> /path/to/Experiments
    ```
-
----
-
-## Naming Conventions for Experiments
-
-To ensure consistency, please follow these naming conventions for your experiment directories:
-
-- **Feature Name + Experiment**: Use a clear and descriptive name based on the feature being tested.
-  - Example: `avoid-fouls-experiment`, `no-back-rays-experiment`, etc.
-
----
-
-## List of Features and Experiment Checkboxes
-
-Please check off each experiment after it has been completed.
-
-- [ ] **Avoid Fouls**
-- [ ] **No Back Rays**
-- [ ] **Decoupled Vision**
-- [ ] **Sound Sensor**
-
----
-
-### Additional Notes
-
-- Each feature should be trained with the same environment settings to ensure consistency in results.
-- After training each experiment, evaluate the performance and compare it to the baseline model.
