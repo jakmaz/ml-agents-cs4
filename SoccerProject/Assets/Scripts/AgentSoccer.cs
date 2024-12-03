@@ -29,6 +29,8 @@ public class AgentSoccer : Agent
 
     [HideInInspector]
     public Team team;
+    public Vector3 opponentGoalPosition;
+    public Vector3 ownGoalPosition;
     float m_KickPower;
     // The coefficient for the reward for colliding with a ball. Set using curriculum.
     float m_BallTouch;
@@ -49,6 +51,7 @@ public class AgentSoccer : Agent
     BehaviorParameters m_BehaviorParameters;
     public Vector3 initialPos;
     public float rotSign;
+    public GameObject ball;
 
     EnvironmentParameters m_ResetParams;
 
@@ -63,6 +66,7 @@ public class AgentSoccer : Agent
         SoccerEnvController envController = GetComponentInParent<SoccerEnvController>();
         if (envController != null)
         {
+            ball = envController.ball;
             m_Existential = 1f / envController.MaxEnvironmentSteps;
         }
         else
@@ -104,6 +108,12 @@ public class AgentSoccer : Agent
 
         m_ResetParams = Academy.Instance.EnvironmentParameters;
 
+        if (team == Team.Blue)
+        {
+            ownGoalPosition = new Vector3(-1650, -25, -1.5258f); // Blue goal
+            opponentGoalPosition = new Vector3(1650, -25, 1.5258f); // Purple goal
+        }
+
         // Add the "No Back Rays" functionality here
         HandleNoBackRays();
     }
@@ -135,6 +145,8 @@ public class AgentSoccer : Agent
         }
         else
         {
+            ownGoalPosition = new Vector3(1650, -25, 1.5258f); // Purple goal position
+            opponentGoalPosition =  new Vector3(-1650, -25, -1.5258f); // Blue goal position
             Debug.LogWarning($"No RayPerceptionSensorComponent3D with tag 'ReverseRays' found!");
         }
     }
@@ -221,6 +233,12 @@ public class AgentSoccer : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
 
     {
+        var soundSensor = GetComponent<SoundSensor>();
+        if (soundSensor != null)
+        {
+            var vectorSensor = new VectorSensor(5, "SoundSensor");
+            soundSensor.UpdateSensor(vectorSensor);
+        }
 
         if (position == Position.Goalie)
         {
@@ -233,6 +251,15 @@ public class AgentSoccer : Agent
             AddReward(-m_Existential);
         }
         MoveAgent(actionBuffers.DiscreteActions);
+
+        // float distanceToOpponentGoal = Vector3.Distance(transform.position, opponentGoalPosition);
+        // float distanceBallToOpponentGoal = Vector3.Distance(ball.transform.position, opponentGoalPosition);
+        
+        // // Additional reward
+        // if (distanceToOpponentGoal < 5f && distanceBallToOpponentGoal < 5f)
+        // {
+        //     AddReward(0.1f);
+        // }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -285,16 +312,67 @@ public class AgentSoccer : Agent
     public void OnCollisionEnter(Collision c)
     {
         var force = k_Power * m_KickPower;
+        var soundSensor = GetComponent<SoundSensor>();
+
+        if (soundSensor != null)
+        {
+            // Calculate initial intensity based on collision speed
+            float collisionSpeed = c.relativeVelocity.magnitude;
+            float initialIntensity = Mathf.Clamp01(collisionSpeed / 10f); // Scale to a 0-1 range
+
+            if (c.gameObject.CompareTag("ball"))
+            {
+                // Trigger sound for ball collision
+                soundSensor.TriggerBallWithAgentCollision(transform.position, initialIntensity);
+
+                var vectorSensor = new VectorSensor(5, "SoundSensor");
+                soundSensor.UpdateSensor(vectorSensor);
+
+                BroadcastSoundToOtherAgents(transform.position, SoundType.BallWithAgentCollision, initialIntensity);
+
+            } 
+            else if (c.gameObject.CompareTag("wall"))
+            {
+                // Trigger sound for wall collision
+                soundSensor.TriggerAgentWithObjectCollision(transform.position, initialIntensity);
+                
+                var vectorSensor = new VectorSensor(5, "SoundSensor");
+                soundSensor.UpdateSensor(vectorSensor);
+
+                BroadcastSoundToOtherAgents(transform.position, SoundType.AgentWithObjectCollision, initialIntensity);
+
+                Debug.Log("Collision with wall detected.");
+            }
+        }
         if (position == Position.Goalie)
         {
             force = k_Power;
         }
         if (c.gameObject.CompareTag("ball"))
         {
-            AddReward(.2f * m_BallTouch);
+            Vector3 directionToOpponentGoal = (opponentGoalPosition - transform.position).normalized;
+            Vector3 directionToOwnGoal = (ownGoalPosition - transform.position).normalized;
+
+            // Additional reward
+            // float alignmentWithOpponentGoal = Vector3.Dot(directionToOpponentGoal, transform.forward);
+            // float alignmentWithOwnGoal = Vector3.Dot(directionToOwnGoal, transform.forward);
+            
+            // if (alignmentWithOpponentGoal > 0.8f)
+            // {
+            //     AddReward(0.03f); // Positive
+            // }
+
+            // if (alignmentWithOwnGoal > 0.8f)
+            // {
+            //     AddReward(-0.03f); // Negative
+            // }
+
+            if(position == Position.Goalie) force = k_Power;
             var dir = c.contacts[0].point - transform.position;
             dir = dir.normalized;
             c.gameObject.GetComponent<Rigidbody>().AddForce(dir * force);
+
+            AddReward(.2f * m_BallTouch);
         }
 
         // Collision avoidance logic for fouls
@@ -312,9 +390,38 @@ public class AgentSoccer : Agent
         }
     }
 
+    void BroadcastSoundToOtherAgents(Vector3 soundPosition, SoundType soundType, float initialIntensity)
+    {
+        // Find all AgentSoccer objects in the scene
+        AgentSoccer[] allAgents = FindObjectsOfType<AgentSoccer>();
+        foreach (var agent in allAgents)
+        {
+            if (agent == this) continue; // Skip the agent producing the sound
+
+            var soundSensor = agent.GetComponent<SoundSensor>();
+            if (soundSensor != null)
+            {
+                float distance = Vector3.Distance(agent.transform.position, soundPosition);
+
+                if (distance <= soundSensor.maxSoundRange)
+                {
+                    // Broadcast sound to agents within range
+                    soundSensor.SetSoundData(soundPosition, soundType, initialIntensity);
+                }
+            }
+        }
+    }
+
     public override void OnEpisodeBegin()
     {
         m_BallTouch = m_ResetParams.GetWithDefault("ball_touch", 0);
+
+        // Reset the sound sensor
+        var soundSensor = GetComponent<SoundSensor>();
+        if(soundSensor != null)
+        {
+            soundSensor.ResetSound();
+        }
     }
 
 }
