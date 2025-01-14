@@ -50,6 +50,18 @@ public class SoccerEnvController : MonoBehaviour
 
     // Reference to ball's sound sensor
     private SoundSensor ballSoundSensor;
+    
+    
+    private int currentGameCount = 0;
+    public int maxGames = 3;
+
+    private float blueTeamRewards = 0f;
+    private float blueTeamPenalties = 0f;
+    private float purpleTeamRewards = 0f;
+    private float purpleTeamPenalties = 0f;
+
+    private List<PerformanceMetrics> performanceMetricsList = new List<PerformanceMetrics>();
+
 
     void Start()
     {
@@ -88,6 +100,7 @@ public class SoccerEnvController : MonoBehaviour
     {
         m_ResetTimer += 1;
                 // Regularly update ball's sound sensor
+        
         if (ballSoundSensor != null)
         {
             var vectorSensor = new VectorSensor(5, "SoundSensor");
@@ -109,7 +122,7 @@ public class SoccerEnvController : MonoBehaviour
         {
             m_BlueAgentGroup.GroupEpisodeInterrupted();
             m_PurpleAgentGroup.GroupEpisodeInterrupted();
-            ResetScene();
+            EndGame(null); //If timeout-> no winner
         }
     }
 
@@ -141,19 +154,25 @@ public class SoccerEnvController : MonoBehaviour
 
     public void GoalTouched(Team scoredTeam)
     {
+        float reward = 1 - (float)m_ResetTimer / MaxEnvironmentSteps; // Calculate reward based on time efficiency
+
         if (scoredTeam == Team.Blue)
         {
-            m_BlueAgentGroup.AddGroupReward(1 - (float)m_ResetTimer / MaxEnvironmentSteps);
+            m_BlueAgentGroup.AddGroupReward(reward);
             m_PurpleAgentGroup.AddGroupReward(-1);
+
+            blueTeamRewards += reward;
+            purpleTeamPenalties += 1;
         }
         else
         {
-            m_PurpleAgentGroup.AddGroupReward(1 - (float)m_ResetTimer / MaxEnvironmentSteps);
+            m_PurpleAgentGroup.AddGroupReward(reward);
             m_BlueAgentGroup.AddGroupReward(-1);
+
+            purpleTeamRewards += reward;
+            blueTeamPenalties += 1;
         }
-        m_PurpleAgentGroup.EndGroupEpisode();
-        m_BlueAgentGroup.EndGroupEpisode();
-        ResetScene();
+        EndGame(scoredTeam);
 
     }
 
@@ -161,6 +180,10 @@ public class SoccerEnvController : MonoBehaviour
     public void ResetScene()
     {
         m_ResetTimer = 0;
+        blueTeamRewards = 0f;
+        blueTeamPenalties = 0f;
+        purpleTeamRewards = 0f;
+        purpleTeamPenalties = 0f;
 
         //Reset Agents
         foreach (var item in AgentsList)
@@ -178,7 +201,7 @@ public class SoccerEnvController : MonoBehaviour
         //Reset Ball
         ResetBall();
     }
-        private void BroadcastSoundToAgents(Vector3 soundPosition, SoundType soundType, float initialIntensity)
+    private void BroadcastSoundToAgents(Vector3 soundPosition, SoundType soundType, float initialIntensity)
     {
         foreach (var player in AgentsList)
         {
@@ -189,5 +212,46 @@ public class SoccerEnvController : MonoBehaviour
                 Debug.Log($"Broadcasting sound to {player.Agent.name}: Position={soundPosition}, Intensity={initialIntensity}, Type={soundType}");
             }
         }
+    }
+
+    private void EndGame(Team? winner)
+    {
+        PerformanceMetrics metrics = new PerformanceMetrics{
+            Winner = winner, 
+            GameDuration = m_ResetTimer,
+            BlueRewards = blueTeamRewards,
+            BluePenalties = blueTeamPenalties,
+            PurpleRewards = purpleTeamRewards,
+            PurplePenalties = purpleTeamPenalties
+        };
+        performanceMetricsList.Add(metrics);
+        currentGameCount++;
+
+        if (currentGameCount >= maxGames)
+        {
+            Debug.Log("Maximum games reached.");
+            SaveMetrics();
+            UnityEditor.EditorApplication.isPlaying = false; // Stops the Unity editor
+        }
+        else
+        {
+            ResetScene();
+        }
+    }
+
+    private void SaveMetrics()
+    {
+        string filePath = Application.dataPath + "/PerformanceMetrics.csv";
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
+        {
+            file.WriteLine("Game,Winner,GameDuration,BlueRewards,BluePenalties,PurpleRewards,PurplePenalties");
+            for (int i = 0; i < performanceMetricsList.Count; i++)
+            {
+                var metrics = performanceMetricsList[i];
+                string winnerString = metrics.Winner.HasValue ? metrics.Winner.ToString() : "NoWinner";
+                file.WriteLine($"{i + 1},{winnerString},{metrics.GameDuration},{metrics.BlueRewards},{metrics.BluePenalties},{metrics.PurpleRewards},{metrics.PurplePenalties}");
+            }
+        }
+        Debug.Log($"Metrics saved to {filePath}");
     }
 }
