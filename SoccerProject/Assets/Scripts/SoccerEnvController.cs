@@ -32,6 +32,7 @@ public class SoccerEnvController : MonoBehaviour
     /// We will be changing the ground material based on success/failue
     /// </summary>
 
+    public int FieldIndex; // Unique index for each soccer field
     public GameObject ball;
     [HideInInspector]
     public Rigidbody ballRb;
@@ -54,6 +55,7 @@ public class SoccerEnvController : MonoBehaviour
     
     private int currentGameCount = 0;
     public int maxGames = 3;
+    private bool hasCompletedGames = false; // Tracks if this field has already completed its games
 
     private float blueTeamRewards = 0f;
     private float blueTeamPenalties = 0f;
@@ -61,11 +63,19 @@ public class SoccerEnvController : MonoBehaviour
     private float purpleTeamPenalties = 0f;
 
     private List<PerformanceMetrics> performanceMetricsList = new List<PerformanceMetrics>();
+    
+    private SoccerGameManager gameManager;
 
 
     void Start()
     {
-
+        //Find the SoccerGameManager in the scene
+        gameManager = FindObjectOfType<SoccerGameManager>();
+        if (gameManager == null)
+        {
+            Debug.LogError("SoccerGameManager not found in the scene!");
+        }
+        
         m_SoccerSettings = FindObjectOfType<SoccerSettings>();
         // Initialize TeamManager
         m_BlueAgentGroup = new SimpleMultiAgentGroup();
@@ -99,8 +109,8 @@ public class SoccerEnvController : MonoBehaviour
     void FixedUpdate()
     {
         m_ResetTimer += 1;
-                // Regularly update ball's sound sensor
         
+        // Regularly update ball's sound sensor
         if (ballSoundSensor != null)
         {
             var vectorSensor = new VectorSensor(5, "SoundSensor");
@@ -216,22 +226,30 @@ public class SoccerEnvController : MonoBehaviour
 
     private void EndGame(Team? winner)
     {
-        PerformanceMetrics metrics = new PerformanceMetrics{
-            Winner = winner, 
+        if (hasCompletedGames)
+        {
+            Debug.LogWarning($"Field {FieldIndex} has already completed its games. Ignoring duplicate EndGame call.");
+            return; // Prevent further processing if the field is already marked as complete
+        }
+
+        PerformanceMetrics metrics = new PerformanceMetrics
+        {
+            Winner = winner ?? null, // Handle null winner gracefully
             GameDuration = m_ResetTimer,
             BlueRewards = blueTeamRewards,
             BluePenalties = blueTeamPenalties,
             PurpleRewards = purpleTeamRewards,
             PurplePenalties = purpleTeamPenalties
         };
+
         performanceMetricsList.Add(metrics);
         currentGameCount++;
 
         if (currentGameCount >= maxGames)
         {
-            Debug.Log("Maximum games reached.");
-            SaveMetrics();
-            UnityEditor.EditorApplication.isPlaying = false; // Stops the Unity editor
+            Debug.Log($"Field {FieldIndex} completed its games.");
+            hasCompletedGames = true; // Marks the field as complete
+            gameManager.OnFieldCompleted(); // Notifies the manager
         }
         else
         {
@@ -239,19 +257,8 @@ public class SoccerEnvController : MonoBehaviour
         }
     }
 
-    private void SaveMetrics()
+    public List<PerformanceMetrics> GetPerformanceMetrics()
     {
-        string filePath = Application.dataPath + "/PerformanceMetrics.csv";
-        using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
-        {
-            file.WriteLine("Game,Winner,GameDuration,BlueRewards,BluePenalties,PurpleRewards,PurplePenalties");
-            for (int i = 0; i < performanceMetricsList.Count; i++)
-            {
-                var metrics = performanceMetricsList[i];
-                string winnerString = metrics.Winner.HasValue ? metrics.Winner.ToString() : "NoWinner";
-                file.WriteLine($"{i + 1},{winnerString},{metrics.GameDuration},{metrics.BlueRewards},{metrics.BluePenalties},{metrics.PurpleRewards},{metrics.PurplePenalties}");
-            }
-        }
-        Debug.Log($"Metrics saved to {filePath}");
+        return performanceMetricsList ?? new List<PerformanceMetrics>();
     }
 }
