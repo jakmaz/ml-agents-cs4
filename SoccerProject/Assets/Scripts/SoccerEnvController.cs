@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.MLAgents;
 using UnityEngine;
 using Unity.MLAgents.Sensors;
+using UnityEngine.Profiling;
 
 public class SoccerEnvController : MonoBehaviour
 {
@@ -17,20 +18,17 @@ public class SoccerEnvController : MonoBehaviour
         public Rigidbody Rb;
     }
 
+    ///////////////////////////////////////////////////////////
+    private float totalFrameTime = 0f; 
+    private int frameCount = 0;        
+    private Recorder cpuUsageRecorder; //CPU usage tracker
+    //////////////////////////////////////////////////////////
 
     /// <summary>
     /// Max Academy steps before this platform resets
     /// </summary>
     /// <returns></returns>
     [Tooltip("Max Environment Steps")] public int MaxEnvironmentSteps = 25000;
-
-    /// <summary>
-    /// The area bounds.
-    /// </summary>
-
-    /// <summary>
-    /// We will be changing the ground material based on success/failue
-    /// </summary>
 
     public int FieldIndex; // Unique index for each soccer field
     public GameObject ball;
@@ -77,11 +75,13 @@ public class SoccerEnvController : MonoBehaviour
         }
         
         m_SoccerSettings = FindObjectOfType<SoccerSettings>();
+
         // Initialize TeamManager
         m_BlueAgentGroup = new SimpleMultiAgentGroup();
         m_PurpleAgentGroup = new SimpleMultiAgentGroup();
         ballRb = ball.GetComponent<Rigidbody>();
         m_BallStartingPos = new Vector3(ball.transform.position.x, ball.transform.position.y, ball.transform.position.z);
+
         // Attach a collider and a SoundSensor to the ball for collision detection
         ballSoundSensor = ball.GetComponent<SoundSensor>();
         if(ballSoundSensor == null)
@@ -89,6 +89,10 @@ public class SoccerEnvController : MonoBehaviour
             ballSoundSensor = ball.AddComponent<SoundSensor>();
             ballSoundSensor.agentTransform = ball.transform;
         }
+
+        // Initialize performance tracking
+        cpuUsageRecorder = Recorder.Get("Main Thread");
+
         foreach (var item in AgentsList)
         {
             item.StartingPos = item.Agent.transform.position;
@@ -113,6 +117,10 @@ public class SoccerEnvController : MonoBehaviour
             return;
         }
         
+        // Track frame rate
+        totalFrameTime += Time.deltaTime;
+        frameCount++;
+
         m_ResetTimer += 1;
         
         // Regularly update ball's sound sensor
@@ -237,6 +245,10 @@ public class SoccerEnvController : MonoBehaviour
             return; // Prevent further processing if the field is already marked as complete
         }
 
+         // Calculate performance metrics
+        float averageFrameRate = frameCount > 0 ? frameCount / totalFrameTime : 0f;
+        float cpuUsage = cpuUsageRecorder != null ? cpuUsageRecorder.elapsedNanoseconds / 1e6f : 0f;
+        long memoryUsage = Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024); //converts bytes to MB
 
         PerformanceMetrics metrics = new PerformanceMetrics
         {
@@ -245,7 +257,10 @@ public class SoccerEnvController : MonoBehaviour
             BlueRewards = blueTeamRewards,
             BluePenalties = blueTeamPenalties,
             PurpleRewards = purpleTeamRewards,
-            PurplePenalties = purpleTeamPenalties
+            PurplePenalties = purpleTeamPenalties,
+            AverageFrameRate = averageFrameRate,
+            AverageCPUUsage = cpuUsage,
+            MemoryUsage = memoryUsage
         };
 
         performanceMetricsList.Add(metrics);

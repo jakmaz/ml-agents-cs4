@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class SoccerGameManager : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class SoccerGameManager : MonoBehaviour
         string filePath = Application.dataPath + "/AllPerformanceMetrics.csv";
         using (System.IO.StreamWriter file = new System.IO.StreamWriter(filePath))
         {
-            file.WriteLine("Game,Field,Winner,GameDuration,BlueRewards,BluePenalties,PurpleRewards,PurplePenalties");
+            file.WriteLine("Game,Field,Winner,GameDuration,BlueRewards,BluePenalties,PurpleRewards,PurplePenalties,FrameRate,CPU(ms),Memory(MB)");
 
             foreach (var field in soccerFields)
             {
@@ -59,7 +60,7 @@ public class SoccerGameManager : MonoBehaviour
                 {
                     var metrics = metricsList[i];
                     string winnerString = metrics.Winner.HasValue ? metrics.Winner.ToString() : "NoWinner";
-                    file.WriteLine($"{i + 1},{field.FieldIndex},{winnerString},{metrics.GameDuration},{metrics.BlueRewards},{metrics.BluePenalties},{metrics.PurpleRewards},{metrics.PurplePenalties}");
+                    file.WriteLine($"{i + 1},{field.FieldIndex},{winnerString},{metrics.GameDuration},{metrics.BlueRewards},{metrics.BluePenalties},{metrics.PurpleRewards},{metrics.PurplePenalties},{metrics.AverageFrameRate:F2},{metrics.AverageCPUUsage:F2},{metrics.MemoryUsage}");
                 }
             }
         }
