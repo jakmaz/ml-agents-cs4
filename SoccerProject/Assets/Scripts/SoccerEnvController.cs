@@ -177,6 +177,11 @@ public class SoccerEnvController : MonoBehaviour
 
     public void GoalTouched(Team scoredTeam)
     {
+        if (m_ResetTimer == 0){
+            Debug.LogError("Goal scored with 0 steps. Ignoring this event.");
+            return; //prevent goal from being processed
+        }
+        
         float reward = 1 - (float)m_ResetTimer / MaxEnvironmentSteps; // Calculate reward based on time efficiency
 
         if (scoredTeam == Team.Blue)
@@ -239,6 +244,11 @@ public class SoccerEnvController : MonoBehaviour
 
     private void EndGame(Team? winner)
     {
+        if(m_ResetTimer == 0){
+            Debug.LogError($"Game ended with duration 0. No winner should be declared.");
+            winner = null; 
+        }
+
         if (hasCompletedGames)
         {
             Debug.LogWarning($"Field {FieldIndex} has already completed its games. Ignoring duplicate EndGame call.");

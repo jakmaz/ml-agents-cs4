@@ -59,6 +59,8 @@ public class SoccerGameManager : MonoBehaviour
                 for (int i = 0; i < metricsList.Count; i++)
                 {
                     var metrics = metricsList[i];
+                    if (metrics.GameDuration == 0) continue; //skip invalid games
+                    
                     string winnerString = metrics.Winner.HasValue ? metrics.Winner.ToString() : "NoWinner";
                     file.WriteLine($"{i + 1},{field.FieldIndex},{winnerString},{metrics.GameDuration},{metrics.BlueRewards},{metrics.BluePenalties},{metrics.PurpleRewards},{metrics.PurplePenalties},{metrics.AverageFrameRate:F2},{metrics.AverageCPUUsage:F2},{metrics.MemoryUsage}");
                 }
