@@ -108,6 +108,11 @@ public class SoccerEnvController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (hasCompletedGames)
+        {
+            return;
+        }
+        
         m_ResetTimer += 1;
         
         // Regularly update ball's sound sensor
@@ -232,9 +237,10 @@ public class SoccerEnvController : MonoBehaviour
             return; // Prevent further processing if the field is already marked as complete
         }
 
+
         PerformanceMetrics metrics = new PerformanceMetrics
         {
-            Winner = winner ?? null, // Handle null winner gracefully
+            Winner = winner, 
             GameDuration = m_ResetTimer,
             BlueRewards = blueTeamRewards,
             BluePenalties = blueTeamPenalties,
@@ -245,10 +251,11 @@ public class SoccerEnvController : MonoBehaviour
         performanceMetricsList.Add(metrics);
         currentGameCount++;
 
-        if (currentGameCount >= maxGames)
+        if (currentGameCount >= maxGames || winner == (null))
         {
             Debug.Log($"Field {FieldIndex} completed its games.");
-            hasCompletedGames = true; // Marks the field as complete
+            hasCompletedGames = true;
+            ResetToIdleState();
             gameManager.OnFieldCompleted(); // Notifies the manager
         }
         else
@@ -261,4 +268,28 @@ public class SoccerEnvController : MonoBehaviour
     {
         return performanceMetricsList ?? new List<PerformanceMetrics>();
     }
+
+    private void ResetToIdleState()
+    {
+        // Reset Agents
+        foreach (var item in AgentsList)
+        {
+            item.Agent.transform.position = item.StartingPos;
+            item.Agent.transform.rotation = item.StartingRot;
+            item.Rb.velocity = Vector3.zero;
+            item.Rb.angularVelocity = Vector3.zero;
+
+            // Deactivate agent to stop it from playing
+            item.Agent.IsActive = false;
+        }
+
+        // Reset Ball
+        ball.transform.position = m_BallStartingPos;
+        ballRb.velocity = Vector3.zero;
+        ballRb.angularVelocity = Vector3.zero;
+
+        Debug.Log($"Field {FieldIndex} is now idle.");
+    }
+
+
 }

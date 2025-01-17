@@ -31,7 +31,11 @@ public class SoccerGameManager : MonoBehaviour
             SaveAllMetrics();
             Debug.Log("All fields completed their games. Saving metrics and closing simulation.");
         
+            #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false; // Stop the Unity Editor
+            #else
+            Application.Quit(); // Stop the application in a build
+            #endif        
         }
     }
 

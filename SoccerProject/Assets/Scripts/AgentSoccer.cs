@@ -44,7 +44,6 @@ public class AgentSoccer : Agent
     private float m_VisionAngle = 0f; // Current vision angle relative to forward direction
     private float m_VisionRotateSpeed = 180f; // Degrees per second
 
-
     [HideInInspector]
     public Rigidbody agentRb;
     SoccerSettings m_SoccerSettings;
@@ -60,6 +59,8 @@ public class AgentSoccer : Agent
     public bool noBackRays = false;
     public bool decoupledVision = false;
     public bool soundSensor = false;
+    public bool IsActive { get; set; } = true; // Default to true
+
 
     public override void Initialize()
     {
@@ -153,6 +154,13 @@ public class AgentSoccer : Agent
 
     public void MoveAgent(ActionSegment<int> act)
     {
+        if (!IsActive)
+        {
+            agentRb.velocity = Vector3.zero;
+            agentRb.angularVelocity = Vector3.zero;
+            return;
+        }
+        
         var dirToGo = Vector3.zero;
         var rotateDir = Vector3.zero;
 
@@ -233,6 +241,11 @@ public class AgentSoccer : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
 
     {
+        if (!IsActive)
+        {
+            return;
+        }
+        
         var soundSensor = GetComponent<SoundSensor>();
         if (soundSensor != null)
         {
