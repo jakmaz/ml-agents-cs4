@@ -52,7 +52,7 @@ public class SoccerEnvController : MonoBehaviour
     
     
     private int currentGameCount = 0;
-    public int maxGames = 3;
+    //public int maxGames = 5;
     private bool hasCompletedGames = false; // Tracks if this field has already completed its games
 
     private float blueTeamRewards = 0f;
@@ -181,7 +181,7 @@ public class SoccerEnvController : MonoBehaviour
             Debug.LogError("Goal scored with 0 steps. Ignoring this event.");
             return; //prevent goal from being processed
         }
-        
+
         float reward = 1 - (float)m_ResetTimer / MaxEnvironmentSteps; // Calculate reward based on time efficiency
 
         if (scoredTeam == Team.Blue)
@@ -276,7 +276,8 @@ public class SoccerEnvController : MonoBehaviour
         performanceMetricsList.Add(metrics);
         currentGameCount++;
 
-        if (currentGameCount >= maxGames || winner == (null))
+        //change the number of games through here pls, vs code is going crazy
+        if (currentGameCount >= 10 || winner == (null))
         {
             Debug.Log($"Field {FieldIndex} completed its games.");
             hasCompletedGames = true;
