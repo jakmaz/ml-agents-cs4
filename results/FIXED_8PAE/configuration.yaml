@@ -37,7 +37,7 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     even_checkpoints: false
-    max_steps: 2000000
+    max_steps: 5000000
     time_horizon: 1000
     summary_freq: 10000
     threaded: false
@@ -75,15 +75,15 @@ environment_parameters:
     - value:
         sampler_type: constant
         sampler_parameters:
-          seed: 4312
+          seed: 3099
           value: 0.02
       name: ball_touch
       completion_criteria: null
 checkpoint_settings:
-  run_id: ALL_fixed
+  run_id: FIXED_8PAE
   initialize_from: null
   load_model: false
-  resume: false
+  resume: true
   force: false
   train_model: false
   inference: false

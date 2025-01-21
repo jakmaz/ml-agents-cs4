@@ -5,59 +5,59 @@
     "SoccerTwos": {
         "checkpoints": [
             {
-                "steps": 499942,
-                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-499942.onnx",
-                "reward": null,
-                "creation_time": 1733063492.206697,
+                "steps": 3499888,
+                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-3499888.onnx",
+                "reward": 0.007793103697998771,
+                "creation_time": 1737421015.4341488,
                 "auxillary_file_paths": [
-                    "results\\8PVE\\SoccerTwos\\SoccerTwos-499942.pt"
+                    "results\\8PVE\\SoccerTwos\\SoccerTwos-3499888.pt"
                 ]
             },
             {
-                "steps": 999273,
-                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-999273.onnx",
-                "reward": 0.007200000248849392,
-                "creation_time": 1733064071.072601,
+                "steps": 3999950,
+                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-3999950.onnx",
+                "reward": 0.00687500016647391,
+                "creation_time": 1737422868.377157,
                 "auxillary_file_paths": [
-                    "results\\8PVE\\SoccerTwos\\SoccerTwos-999273.pt"
+                    "results\\8PVE\\SoccerTwos\\SoccerTwos-3999950.pt"
                 ]
             },
             {
-                "steps": 1499908,
-                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-1499908.onnx",
-                "reward": 0.005797101569402477,
-                "creation_time": 1733064706.5072396,
+                "steps": 4499978,
+                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-4499978.onnx",
+                "reward": 0.008223350488386934,
+                "creation_time": 1737424884.4034011,
                 "auxillary_file_paths": [
-                    "results\\8PVE\\SoccerTwos\\SoccerTwos-1499908.pt"
+                    "results\\8PVE\\SoccerTwos\\SoccerTwos-4499978.pt"
                 ]
             },
             {
-                "steps": 1999952,
-                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-1999952.onnx",
-                "reward": 0.005634615558217495,
-                "creation_time": 1733065462.2644763,
+                "steps": 4999888,
+                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-4999888.onnx",
+                "reward": 0.008318471606630998,
+                "creation_time": 1737426728.8795984,
                 "auxillary_file_paths": [
-                    "results\\8PVE\\SoccerTwos\\SoccerTwos-1999952.pt"
+                    "results\\8PVE\\SoccerTwos\\SoccerTwos-4999888.pt"
                 ]
             },
             {
-                "steps": 2000080,
-                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-2000080.onnx",
-                "reward": 0.005657143032710467,
-                "creation_time": 1733065462.348487,
+                "steps": 5000242,
+                "file_path": "results\\8PVE\\SoccerTwos\\SoccerTwos-5000242.onnx",
+                "reward": 0.008417721781761775,
+                "creation_time": 1737426729.1394851,
                 "auxillary_file_paths": [
-                    "results\\8PVE\\SoccerTwos\\SoccerTwos-2000080.pt"
+                    "results\\8PVE\\SoccerTwos\\SoccerTwos-5000242.pt"
                 ]
             }
         ],
-        "elo": 1434.1368339700068,
+        "elo": 1584.6399942746475,
         "final_checkpoint": {
-            "steps": 2000080,
+            "steps": 5000242,
             "file_path": "results\\8PVE\\SoccerTwos.onnx",
-            "reward": 0.005657143032710467,
-            "creation_time": 1733065462.348487,
+            "reward": 0.008417721781761775,
+            "creation_time": 1737426729.1394851,
             "auxillary_file_paths": [
-                "results\\8PVE\\SoccerTwos\\SoccerTwos-2000080.pt"
+                "results\\8PVE\\SoccerTwos\\SoccerTwos-5000242.pt"
             ]
         }
     },
