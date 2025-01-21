@@ -9,14 +9,14 @@ public class SoccerGameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("SoccerGameManager initialized and active.");
+        //Debug.Log("SoccerGameManager initialized and active.");
         // Automatically find all SoccerEnvController instances in the scene
         SoccerEnvController[] fields = FindObjectsOfType<SoccerEnvController>();
         foreach (var field in fields)
         {
             soccerFields.Add(field);
         }
-        Debug.Log($"Total number of soccer fields found: {soccerFields.Count}");
+        //Debug.Log($"Total number of soccer fields found: {soccerFields.Count}");
 
     }
 
@@ -24,14 +24,14 @@ public class SoccerGameManager : MonoBehaviour
     {
         fieldsCompleted++;
 
-        Debug.Log($"Field completed. Total completed: {fieldsCompleted} of {soccerFields.Count}");
+        //Debug.Log($"Field completed. Total completed: {fieldsCompleted} of {soccerFields.Count}");
         
         // To check if all fields have finished their games
         if (fieldsCompleted >= soccerFields.Count)
         {
-            SaveAllMetrics();
             Debug.Log("All fields completed their games. Saving metrics and closing simulation.");
-        
+            SaveAllMetrics();
+            
             #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false; // Stop the Unity Editor
             #else
@@ -69,5 +69,4 @@ public class SoccerGameManager : MonoBehaviour
 
         Debug.Log($"Metrics saved to {filePath}");
     }
-
 }

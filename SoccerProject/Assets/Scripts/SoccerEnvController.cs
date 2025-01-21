@@ -18,12 +18,6 @@ public class SoccerEnvController : MonoBehaviour
         public Rigidbody Rb;
     }
 
-    ///////////////////////////////////////////////////////////
-    private float totalFrameTime = 0f; 
-    private int frameCount = 0;        
-    private Recorder cpuUsageRecorder; //CPU usage tracker
-    //////////////////////////////////////////////////////////
-
     /// <summary>
     /// Max Academy steps before this platform resets
     /// </summary>
@@ -52,13 +46,16 @@ public class SoccerEnvController : MonoBehaviour
     
     
     private int currentGameCount = 0;
-    //public int maxGames = 5;
+    private int maxGames = 10;
     private bool hasCompletedGames = false; // Tracks if this field has already completed its games
 
     private float blueTeamRewards = 0f;
     private float blueTeamPenalties = 0f;
     private float purpleTeamRewards = 0f;
     private float purpleTeamPenalties = 0f;
+    private float totalFrameTime = 0f; 
+    private int frameCount = 0;        
+    private Recorder cpuUsageRecorder; //CPU usage tracker
 
     private List<PerformanceMetrics> performanceMetricsList = new List<PerformanceMetrics>();
     
@@ -178,8 +175,7 @@ public class SoccerEnvController : MonoBehaviour
     public void GoalTouched(Team scoredTeam)
     {
         if (m_ResetTimer == 0){
-            Debug.LogError("Goal scored with 0 steps. Ignoring this event.");
-            return; //prevent goal from being processed
+            return; //prevent goal from being processed because duration is 0
         }
 
         float reward = 1 - (float)m_ResetTimer / MaxEnvironmentSteps; // Calculate reward based on time efficiency
@@ -251,7 +247,6 @@ public class SoccerEnvController : MonoBehaviour
 
         if (hasCompletedGames)
         {
-            Debug.LogWarning($"Field {FieldIndex} has already completed its games. Ignoring duplicate EndGame call.");
             return; // Prevent further processing if the field is already marked as complete
         }
 
@@ -277,9 +272,9 @@ public class SoccerEnvController : MonoBehaviour
         currentGameCount++;
 
         //change the number of games through here pls, vs code is going crazy
-        if (currentGameCount >= 10 || winner == (null))
+        if (currentGameCount >= maxGames || winner == (null))
         {
-            Debug.Log($"Field {FieldIndex} completed its games.");
+            //Debug.Log($"Field {FieldIndex} completed its games.");
             hasCompletedGames = true;
             ResetToIdleState();
             gameManager.OnFieldCompleted(); // Notifies the manager
@@ -313,9 +308,7 @@ public class SoccerEnvController : MonoBehaviour
         ball.transform.position = m_BallStartingPos;
         ballRb.velocity = Vector3.zero;
         ballRb.angularVelocity = Vector3.zero;
-
-        Debug.Log($"Field {FieldIndex} is now idle.");
+        
+        //Debug.Log($"Field {FieldIndex} is now idle.");
     }
-
-
 }
