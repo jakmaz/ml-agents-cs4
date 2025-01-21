@@ -271,8 +271,7 @@ public class SoccerEnvController : MonoBehaviour
         performanceMetricsList.Add(metrics);
         currentGameCount++;
 
-        //change the number of games through here pls, vs code is going crazy
-        if (currentGameCount >= maxGames || winner == (null))
+        if (currentGameCount >= maxGames)
         {
             //Debug.Log($"Field {FieldIndex} completed its games.");
             hasCompletedGames = true;
@@ -308,7 +307,7 @@ public class SoccerEnvController : MonoBehaviour
         ball.transform.position = m_BallStartingPos;
         ballRb.velocity = Vector3.zero;
         ballRb.angularVelocity = Vector3.zero;
-        
+
         //Debug.Log($"Field {FieldIndex} is now idle.");
     }
 }
